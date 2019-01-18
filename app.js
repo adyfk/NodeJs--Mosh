@@ -1,8 +1,10 @@
-const os = require('os');
-var totalMemory = os.totalmem()
-var freeMemory = os.freemem()
+const fs = require('fs');
 
-console.log('Host Name', os.hostname())
-console.log('OS type', os.type())
-console.log('Total Memory', totalMemory)
-console.log('Free Memory', freeMemory)
+console.log(fs.readdirSync('./'))
+
+
+//always prefer to use it
+fs.readdir('$', (err, result) => {
+    if (err) console.log('Error', err)
+    else console.log(result)
+})
