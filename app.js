@@ -1,8 +1,7 @@
-const EventEmitter = require('events');
-const emitter = new EventEmitter(); //Object
-    
-emitter.on('messageLogged',(args)=> console.log('Listener Called',args) )
-//wilnot Called
 
-const log = require('./logger')
-log('ini Pesan')
+const Logger = require('./logger')
+const logger = new Logger()
+    
+logger.on('messageLogged',(args)=> console.log('Listener Called',args) )
+
+logger.log('ini Pesan')
