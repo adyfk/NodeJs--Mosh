@@ -1,10 +1,10 @@
-const fs = require('fs');
+const EventEmitter = require('events');
+const emitter = new EventEmitter(); //Object
+    
+//Register a Listener
+emitter.on('messageLogged',(args)=> console.log('Listener Called',args) )
 
-console.log(fs.readdirSync('./'))
+//Raise an Event
+emitter.emit("messageLogged",{id:1,url:'http://'});
 
-
-//always prefer to use it
-fs.readdir('$', (err, result) => {
-    if (err) console.log('Error', err)
-    else console.log(result)
-})
+//Raise: Logging {data:message}
