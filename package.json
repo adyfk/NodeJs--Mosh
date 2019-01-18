@@ -16,9 +16,12 @@
     "url": "https://github.com/adyfk/NodeJs--Mosh/issues"
   },
   "homepage": "https://github.com/adyfk/NodeJs--Mosh#readme",
-  "description": "",
   "dependencies": {
     "mongoose": "^5.4.4",
     "underscore": "^1.9.1"
-  }
+  },
+  "devDependencies": {
+    "jshint": "^2.9.7"
+  },
+  "description": ""
 }
