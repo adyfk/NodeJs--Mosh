@@ -22,20 +22,9 @@ app.get('/api/:id', (req, res) => {
   res.send(result)
 })
 app.post('/api', (req, res) => {
-  //Vaidation WIthout JOI
-  //   if (!req.body.nama || req.body.nama.length < 3) {
-  //     //400 Bad request
-  //     res.status(400).send('Name Is Required')
-  //     return
-  //   }
-  const schema = {
-    nama: Joi.string()
-      .min(3)
-      .required()
-  }
-  const result = Joi.validate(req.body, schema)
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message)
+  const { error } = vaidateData(req.body)
+  if (error) {
+    res.status(400).send(error.details[0].message)
     return
   }
   const data = {
@@ -47,5 +36,25 @@ app.post('/api', (req, res) => {
   res.send(datas)
 })
 
+app.put('/api/:id', (req, res) => {
+  const data = datas.find(x => x.id === parseInt(req.params.id))
+  if (!data) res.status(404).send('Data tidak ada')
+  const { error } = vaidateData(req.body)
+  if (error) {
+    res.status(400).send(error.details[0].message)
+    return
+  }
+  data.nama = req.body.nama
+  res.send(datas)
+})
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(port))
+
+function vaidateData(data) {
+  const schema = {
+    nama: Joi.string()
+      .min(3)
+      .required()
+  }
+  return Joi.validate(data, schema)
+}
