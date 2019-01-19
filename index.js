@@ -1,17 +1,20 @@
-const helmet = require('helmet')
-const express = require('express')
-const app = express()
-const genres = require('./routes/genres')
-app.use(express.json())
-app.use(helmet())
-
-app.set('view engine', 'pug')
-app.set('views', './views')
-
-app.use('/genre', genres)
-
-app.get('/', (req, res) => {
-  res.render('index', { title: 'First Page', message: 'Hello' })
+console.log('Before')
+getUser(1, user => {
+  getRepositories(user.gitHubUsername, repos => {
+    console.log('Repo', repos)
+  })
 })
-const port = process.env.PORT || 3000
-app.listen(port, () => console.log(port))
+console.log('After')
+
+function getUser(id, callback) {
+  setTimeout(() => {
+    console.log('Reading a User from DB')
+    callback({ id: id, gitHubUsername: 'Adi' })
+  }, 2000)
+}
+function getRepositories(Username, callback) {
+  setTimeout(() => {
+    console.log('Calling Github API...')
+    callback(['repo1', 'repo2', 'repo2'])
+  }, 2000)
+}
