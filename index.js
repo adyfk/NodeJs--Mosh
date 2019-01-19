@@ -10,9 +10,11 @@ app.use(express.urlencoded({ extended: true })) //we allowed passing array and o
 app.use(express.static('public')) //we can call in url `localhost:3000/file` -> this file into public
 app.use(logger)
 app.use(helmet())
-app.use(morgan('tiny')) //make log every request
 dotenv.config()
-
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('tiny')) //make log every request (Only for Development)
+  console.log('Morgan Enabled...')
+}
 const datas = [
   { id: 1, nama: 'Adi Fatkhurozi' },
   { id: 2, nama: 'Haerani Lathifah' }
