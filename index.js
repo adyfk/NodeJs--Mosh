@@ -1,16 +1,22 @@
+const config = require('config')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const Joi = require('joi')
 const express = require('express')
 const app = express()
-const dotenv = require('dotenv')
 const logger = require('./logger')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) //we allowed passing array and other into url
 app.use(express.static('public')) //we can call in url `localhost:3000/file` -> this file into public
 app.use(logger)
 app.use(helmet())
-dotenv.config()
+
+//Configuration
+console.log('Aplication name:' + config.get('name'))
+//in to env config custom
+console.log('Password:' + config.get('mail.password'))
+//export app_password=123 //setting Environtment
+//export NODE_ENV=production //setting Environtment
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('tiny')) //make log every request (Only for Development)
   console.log('Morgan Enabled...')
