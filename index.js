@@ -18,35 +18,37 @@ app.get('/api', (req, res) => {
 })
 app.get('/api/:id', (req, res) => {
   const result = datas.find(x => x.id === parseInt(req.params.id))
-  if (!result) res.status(404).send('Data tidak ada')
+  if (!result) return res.status(404).send('Data tidak ada')
   res.send(result)
 })
 app.post('/api', (req, res) => {
   const { error } = vaidateData(req.body)
-  if (error) {
-    res.status(400).send(error.details[0].message)
-    return
-  }
+  if (error) return res.status(400).send(error.details[0].message)
   const data = {
     id: datas.length + 1,
     nama: req.body.nama
   }
-
   datas.push(data)
   res.send(datas)
 })
 
 app.put('/api/:id', (req, res) => {
   const data = datas.find(x => x.id === parseInt(req.params.id))
-  if (!data) res.status(404).send('Data tidak ada')
+  if (!data) return res.status(404).send('Data tidak ada')
   const { error } = vaidateData(req.body)
-  if (error) {
-    res.status(400).send(error.details[0].message)
-    return
-  }
+  if (error) return res.status(400).send(error.details[0].message)
   data.nama = req.body.nama
   res.send(datas)
 })
+
+app.delete('/api/:id', (req, res) => {
+  const data = datas.find(x => x.id === parseInt(req.params.id))
+  if (!data) return res.status(404).send('Data tidak ada')
+  const index = datas.indexOf(data)
+  datas.splice(index, 1)
+  res.send(datas)
+})
+
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(port))
 
