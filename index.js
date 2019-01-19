@@ -1,3 +1,4 @@
+const Joi = require('joi')
 const express = require('express')
 const app = express()
 app.use(express.json())
@@ -21,10 +22,27 @@ app.get('/api/:id', (req, res) => {
   res.send(result)
 })
 app.post('/api', (req, res) => {
+  //Vaidation WIthout JOI
+  //   if (!req.body.nama || req.body.nama.length < 3) {
+  //     //400 Bad request
+  //     res.status(400).send('Name Is Required')
+  //     return
+  //   }
+  const schema = {
+    nama: Joi.string()
+      .min(3)
+      .required()
+  }
+  const result = Joi.validate(req.body, schema)
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message)
+    return
+  }
   const data = {
     id: datas.length + 1,
     nama: req.body.nama
   }
+
   datas.push(data)
   res.send(datas)
 })
