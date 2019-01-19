@@ -1,77 +1,17 @@
-const config = require('config')
-const morgan = require('morgan')
+const startupDebugger = require('debug')('app:startup')
+const dbDebugger = require('debug')('app:db')
 const helmet = require('helmet')
-const Joi = require('joi')
 const express = require('express')
 const app = express()
-const logger = require('./logger')
 app.use(express.json())
-app.use(express.urlencoded({ extended: true })) //we allowed passing array and other into url
-app.use(express.static('public')) //we can call in url `localhost:3000/file` -> this file into public
-app.use(logger)
 app.use(helmet())
 
-//Configuration
-console.log('Aplication name:' + config.get('name'))
-//in to env config custom
-console.log('Password:' + config.get('mail.password'))
-//export app_password=123 //setting Environtment
-//export NODE_ENV=production //setting Environtment
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('tiny')) //make log every request (Only for Development)
-  console.log('Morgan Enabled...')
-}
-const datas = [
-  { id: 1, nama: 'Adi Fatkhurozi' },
-  { id: 2, nama: 'Haerani Lathifah' }
-]
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
-app.get('/api', (req, res) => {
-  res.send([1, 2, 3, 4, 5, 6, 8])
-})
-app.get('/api/:id', (req, res) => {
-  const result = datas.find(x => x.id === parseInt(req.params.id))
-  if (!result) return res.status(404).send('Data tidak ada')
-  res.send(result)
-})
-app.post('/api', (req, res) => {
-  const { error } = vaidateData(req.body)
-  if (error) return res.status(400).send(error.details[0].message)
-  const data = {
-    id: datas.length + 1,
-    nama: req.body.nama
-  }
-  datas.push(data)
-  res.send(datas)
-})
-
-app.put('/api/:id', (req, res) => {
-  const data = datas.find(x => x.id === parseInt(req.params.id))
-  if (!data) return res.status(404).send('Data tidak ada')
-  const { error } = vaidateData(req.body)
-  if (error) return res.status(400).send(error.details[0].message)
-  data.nama = req.body.nama
-  res.send(datas)
-})
-
-app.delete('/api/:id', (req, res) => {
-  const data = datas.find(x => x.id === parseInt(req.params.id))
-  if (!data) return res.status(404).send('Data tidak ada')
-  const index = datas.indexOf(data)
-  datas.splice(index, 1)
-  res.send(datas)
-})
+//to Show
+//add env debug
+//export DEBUG='app:startup'
+//export DEBUG='app:*'
+startupDebugger('Started')
+dbDebugger('Connected to Database')
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(port))
-
-function vaidateData(data) {
-  const schema = {
-    nama: Joi.string()
-      .min(3)
-      .required()
-  }
-  return Joi.validate(data, schema)
-}
