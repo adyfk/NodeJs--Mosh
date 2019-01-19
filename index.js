@@ -1,9 +1,16 @@
+const morgan = require('morgan')
+const helmet = require('helmet')
 const Joi = require('joi')
 const express = require('express')
 const app = express()
-app.use(express.json())
 const dotenv = require('dotenv')
-
+const logger = require('./logger')
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) //we allowed passing array and other into url
+app.use(express.static('public')) //we can call in url `localhost:3000/file` -> this file into public
+app.use(logger)
+app.use(helmet())
+app.use(morgan('tiny')) //make log every request
 dotenv.config()
 
 const datas = [
