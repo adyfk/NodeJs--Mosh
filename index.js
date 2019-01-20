@@ -31,13 +31,9 @@ const Course = mongoose.model('Course', courseSchema)
 async function getCourses() {
   const courses = await Course
     //Reguler Expression
-    .find({ author: /^Adi/ }) //String Starts With Adi
-    .find({ author: /Adi$/ }) //String Ends With Adi (Case Sensitive)
-    .find({ author: /Adi$/i }) //(non Case Sensitive) i in the end
-    .find({ author: /.*Adi.*/ }) //Contains Adi
-    .limit(10)
-    .sort({ name: -1 }) //1 to asc / -1 to desc
-    .select({ name: 1, tags: 1 })
+    .find({ author: /^Adi/ })
+    .countDocuments()
+
   console.log(courses)
 }
 getCourses()
