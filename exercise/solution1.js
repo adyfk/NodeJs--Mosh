@@ -33,18 +33,31 @@ async function run() {
 }
 
 async function updateCourse(id) {
-  const course = await Course.findById(id)
-  if (!course) return
-  console.log('after cari')
-  course.isPublished = true
-  course.author = 'Another Author'
-  course.name = 'CURSUSNANAA'
-  // // course.set({
-  // //   isPublished: true,
-  // //   author: 'Another Author'
-  // // })
-  const result = await course.save()
+  const result = await Course.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        author: 'Adi FC',
+        isPublished: false
+      }
+    } // ,
+    // { new: true }
+  ) //Old data will showed , for show new data !!add {new:true}
+  // const result = await Course.update(
+  //   {
+  //     _id: id
+  //   },
+  //   {
+  //     $set: {
+  //       author: 'Adi',
+  //       isPublished: false
+  //     }
+  //   }
+  // ) //Course.update({ isPublished: false })
   console.log(result)
 }
-updateCourse('5a68fdf95db93f64asd77053ddd')
+//but it has deprecated
+//use updateOne or Many
+//https://docs.mongodb.com/manual/reference/method/js-collection/
+updateCourse('5a68fdf95db93f6477053ddd')
 //run()
