@@ -40,24 +40,19 @@ async function updateCourse(id) {
         author: 'Adi FC',
         isPublished: false
       }
-    } // ,
-    // { new: true }
-  ) //Old data will showed , for show new data !!add {new:true}
-  // const result = await Course.update(
-  //   {
-  //     _id: id
-  //   },
-  //   {
-  //     $set: {
-  //       author: 'Adi',
-  //       isPublished: false
-  //     }
-  //   }
-  // ) //Course.update({ isPublished: false })
+    },
+    { new: true }
+  )
+  console.log(result)
+}
+async function deleteCourse(id) {
+  //const result = await Course.deleteOne({ _id: id })
+  const course = await Course.findByIdAndRemove(id) //same
   console.log(result)
 }
 //but it has deprecated
 //use updateOne or Many
 //https://docs.mongodb.com/manual/reference/method/js-collection/
 updateCourse('5a68fdf95db93f6477053ddd')
+deleteCourse('5a68fdf95db93f6477053ddd')
 //run()
