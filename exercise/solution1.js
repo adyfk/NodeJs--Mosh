@@ -6,6 +6,7 @@ mongoose.connect(
 )
 
 const courseSchema = new mongoose.Schema({
+  _id: String,
   name: String,
   author: String,
   tags: [String],
@@ -31,4 +32,19 @@ async function run() {
   console.log(courses)
 }
 
-run()
+async function updateCourse(id) {
+  const course = await Course.findById(id)
+  if (!course) return
+  console.log('after cari')
+  course.isPublished = true
+  course.author = 'Another Author'
+  course.name = 'CURSUSNANAA'
+  // // course.set({
+  // //   isPublished: true,
+  // //   author: 'Another Author'
+  // // })
+  const result = await course.save()
+  console.log(result)
+}
+updateCourse('5a68fdf95db93f64asd77053ddd')
+//run()
