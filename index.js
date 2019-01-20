@@ -29,12 +29,12 @@ const Course = mongoose.model('Course', courseSchema)
 // }
 
 async function getCourses() {
-  //or
-  //and
   const courses = await Course
-    //or
-    .or([{ author: 'Adi' }, { isPublished: true }])
-    .and([{ author: 'Adi' }, { isPublished: true }])
+    //Reguler Expression
+    .find({ author: /^Adi/ }) //String Starts With Adi
+    .find({ author: /Adi$/ }) //String Ends With Adi (Case Sensitive)
+    .find({ author: /Adi$/i }) //(non Case Sensitive) i in the end
+    .find({ author: /.*Adi.*/ }) //Contains Adi
     .limit(10)
     .sort({ name: -1 }) //1 to asc / -1 to desc
     .select({ name: 1, tags: 1 })
