@@ -29,11 +29,14 @@ const Course = mongoose.model('Course', courseSchema)
 // }
 
 async function getCourses() {
+  const pageNumber = 2
+  const pageSize = 10
+  //    /api/course?pageNumber=2&pageSize=10
   const courses = await Course
-    //Reguler Expression
+    //Pagination
     .find({ author: /^Adi/ })
-    .countDocuments()
-
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
   console.log(courses)
 }
 getCourses()
