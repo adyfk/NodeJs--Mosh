@@ -7,7 +7,7 @@ mongoose.connect(
 
 const courseSchema = new mongoose.Schema({
   _id: String,
-  name: String,
+  name: { type: String, required: true },
   author: String,
   tags: [String],
   date: Date,
@@ -50,9 +50,19 @@ async function deleteCourse(id) {
   const course = await Course.findByIdAndRemove(id) //same
   console.log(result)
 }
-//but it has deprecated
-//use updateOne or Many
-//https://docs.mongodb.com/manual/reference/method/js-collection/
-updateCourse('5a68fdf95db93f6477053ddd')
-deleteCourse('5a68fdf95db93f6477053ddd')
-//run()
+async function createCourse() {
+  const course = new Course({
+    author: 'Adi',
+    tags: ['Node', 'Backend'],
+    isPublished: true
+  })
+  try {
+    // const result = await course.save()
+    // console.log(result)
+    //OR
+    await course.validate()
+  } catch (err) {
+    console.log(err.message)
+  }
+}
+createCourse()
