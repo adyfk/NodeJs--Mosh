@@ -7,12 +7,29 @@ mongoose.connect(
 
 const courseSchema = new mongoose.Schema({
   _id: String,
-  name: { type: String, required: true },
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 25 //match:/patern
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['web', 'mobile', 'network'] //salahsatu
+  },
   author: String,
   tags: [String],
   date: Date,
   isPublished: Boolean,
-  price: Number
+  price: {
+    type: Number,
+    required: function() {
+      return this.isPublished
+    },
+    min: 10,
+    max: 60
+  }
 })
 
 const Course = mongoose.model('Course', courseSchema)
@@ -52,9 +69,12 @@ async function deleteCourse(id) {
 }
 async function createCourse() {
   const course = new Course({
+    name: 'Angular Course',
+    category: '-',
     author: 'Adi',
     tags: ['Node', 'Backend'],
-    isPublished: true
+    isPublished: true,
+    price: 90
   })
   try {
     // const result = await course.save()
