@@ -21,7 +21,7 @@ async function getCourses() {
     isPublished: true
     // tags: { $in: ['backend', 'fontend'] }
   })
-    .or([{ tags: 'fontend' }, { tags: 'backend' }])
+    .or({ price: { $gte: 15 } }, { name: /^A/i })
     .sort('-price') //desc or price:-1
     .select('name author price')
 }
