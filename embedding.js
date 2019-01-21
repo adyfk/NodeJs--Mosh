@@ -19,7 +19,7 @@ const Course = mongoose.model(
     name: String,
     // author: authorSchema
     author: {
-      type: authorSchema,
+      type: [authorSchema],
       required: true
     }
   })
@@ -56,5 +56,21 @@ async function updateAuthor(coureseId) {
     }
   )
 }
-updateAuthor('5c45957ecb64552300da1967')
-//createCourse('Node Course', new Author({ name: 'Mosh' }))
+async function addAuthor(coureseId, author) {
+  const course = await Course.findById(coureseId)
+  course.author.push(author)
+  course.save()
+}
+async function removeAuthor(coureseId, authorId) {
+  const course = await Course.findById(coureseId)
+  const author = course.author.id(authorId)
+  author.remove()
+  course.save()
+}
+//updateAuthor('5c45957ecb64552300da1967')
+// createCourse('Node Course', [
+//   new Author({ name: 'Mosh' }),
+//   new Author({ name: 'Jhon' })
+// ])
+// addAuthor('5c45c75977668a3930d5cf87', new Author({ name: 'Adi' }))
+removeAuthor('5c45c75977668a3930d5cf87', '5c45c75977668a3930d5cf85')
