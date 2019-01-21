@@ -82,7 +82,7 @@ async function deleteCourse(id) {
 async function createCourse() {
   const course = new Course({
     name: 'Angular Course',
-    category: 'web',
+    category: '-',
     author: 'Adi',
     isPublished: true,
     price: 60
@@ -93,7 +93,7 @@ async function createCourse() {
     //OR
     await course.validate()
   } catch (err) {
-    console.log(err.message)
+    for (field in err.errors) console.log(err.errors[field].message)
   }
 }
 createCourse()
