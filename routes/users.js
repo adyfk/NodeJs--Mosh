@@ -3,8 +3,6 @@ const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const config = require('config')
 router.post('/', async (req, res) => {
   const { error } = validate(req.body)
   if (error) return res.status(400).send(error.details[0].message)
@@ -18,8 +16,7 @@ router.post('/', async (req, res) => {
 
   await user.save().catch(() => res.status('400').send('Mongo Error'))
 
-  const token = jwt.sign({ _id: user.id }, config.get('jwtPrivateKey'))
-
+  const token = user.generateAuthToken()
   res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']))
 })
 
