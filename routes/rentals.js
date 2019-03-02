@@ -1,34 +1,37 @@
-const fawn = require('fawn')
-const {Rental, validate} = require('../models/rental'); 
-const {Movie} = require('../models/movie'); 
-const {Customer} = require('../models/customer'); 
-const mongoose = require('mongoose');
-const express = require('express');
+const fawn = require("fawn");
+const { Rental, validate } = require("../models/rental");
+const { Movie } = require("../models/movie");
+const { Customer } = require("../models/customer");
+const mongoose = require("mongoose");
+const express = require("express");
 const router = express.Router();
 
-fawn.init(mongoose)
+fawn.init(mongoose);
 
-router.get('/', async (req, res) => {
-  const rentals = await Rental.find().sort('-dateOut');
+router.get("/", async (req, res) => {
+  const rentals = await Rental.find().sort("-dateOut");
   res.send(rentals);
 });
 
-router.post('/', async (req, res) => {
-  const { error } = validate(req.body); 
+router.post("/", async (req, res) => {
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  // This is Bad Solution   if(mongoose.Types.ObjectId.isValid(req.body.customerId))
+
   const customer = await Customer.findById(req.body.customerId);
-  if (!customer) return res.status(400).send('Invalid customer.');
+  if (!customer) return res.status(400).send("Invalid customer.");
 
   const movie = await Movie.findById(req.body.movieId);
-  if (!movie) return res.status(400).send('Invalid movie.');
+  if (!movie) return res.status(400).send("Invalid movie.");
 
-  if (movie.numberInStock === 0) return res.status(400).send('Movie not in stock.');
+  if (movie.numberInStock === 0)
+    return res.status(400).send("Movie not in stock.");
 
-  let rental = new Rental({ 
+  let rental = new Rental({
     customer: {
       _id: customer._id,
-      name: customer.name, 
+      name: customer.name,
       phone: customer.phone
     },
     movie: {
@@ -40,21 +43,22 @@ router.post('/', async (req, res) => {
 
   try {
     new fawn.Task()
-      .save('rentals',rental) //Name Collction Case Sensitive
-      .update('movies',{_id:movie.id} , {$inc : {numberInStock:-1}})
-      .run()
-      res.send(rental);
+      .save("rentals", rental) //Name Collction Case Sensitive
+      .update("movies", { _id: movie._id }, { $inc: { numberInStock: -1 } })
+      .run();
+    res.send(rental);
   } catch (error) {
-    res.status(500).send('Something Failed')
+    res.status(500).send("Something Failed");
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const rental = await Rental.findById(req.params.id);
 
-  if (!rental) return res.status(404).send('The rental with the given ID was not found.');
+  if (!rental)
+    return res.status(404).send("The rental with the given ID was not found.");
 
   res.send(rental);
 });
 
-module.exports = router; 
+module.exports = router;
