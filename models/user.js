@@ -13,14 +13,14 @@ const User = mongoose.model(
     email: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 19,
       maxlength: 255,
       unique: true
     },
     password: {
       type: String,
       required: true,
-      minlength: 5,
+      minlength: 6,
       maxlength: 1024
     }
   })
@@ -28,20 +28,19 @@ const User = mongoose.model(
 function validateUser(user) {
   const schema = {
     name: Joi.string()
-      .min(3)
+      .min(6)
       .max(50)
       .required(),
     email: Joi.string()
-      .min(3)
+      .min(20)
       .max(255)
       .required()
-      .email(),
+      .email({ minDomainAtoms: 2 }),
     password: Joi.string()
-      .min(3)
+      .min(6)
       .max(255)
       .required()
   };
-
   return Joi.validate(user, schema);
 }
 

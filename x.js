@@ -9,7 +9,7 @@
 // Register: POST /api/users {name,email,password}
 // Login: POST /api/logins
 
-email:{
-    type:String,
-    unique:true
-}
+// email:{
+//     type:String,
+//     unique:true
+// }
