@@ -8,6 +8,12 @@ const auth = require('./routes/auth')
 const express = require('express')
 const app = express()
 const Joi = require('joi')
+const config = require('config')
+
+if (!config.get('jwtPrivateKey')) {
+  console.log('Error Fatal Jwt')
+  process.exit(1)
+}
 Joi.objectid = require('joi-objectid')(Joi)
 
 mongoose
