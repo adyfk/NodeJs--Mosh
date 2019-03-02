@@ -9,22 +9,8 @@ router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User Already registered");
 
-  //   user = new User({
-  //     name: req.body.name,
-  //     email: req.body.email,
-  //     password: req.body.password
-  //   });
-
-  // USing Lodash
   user = new User(_.pick(req.body, ["name", "email", "password"]));
   await user.save().catch(err => res.status("400").send("Mongo Error"));
-
-  //   res.send({
-  //     name: user.name,
-  //     email: user.email
-  //   });
-
-  //USing LODASH
 
   res.send(_.pick(user, ["_id", "name", "email"]));
 });
