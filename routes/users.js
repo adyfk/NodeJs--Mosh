@@ -6,9 +6,8 @@ const bcrypt = require('bcrypt')
 const auth = require('../middleware/auth')
 
 router.get('/me', auth, async (req, res) => {
-  try {
-    console.log(req.token._id)
-  } catch (err) {}
+  const user = await User.findById(req.token._id).select('-password')
+  return res.send(user)
 })
 router.post('/', async (req, res) => {
   const { error } = validate(req.body)

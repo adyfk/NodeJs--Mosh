@@ -7,7 +7,6 @@ module.exports = function auth(req, res, next) {
   try {
     jwt.verify(token, 'secretkey', (err, val) => {
       if (!err) {
-        console.log(val)
         req.token = val
       }
     })
