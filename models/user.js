@@ -23,10 +23,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     maxlength: 1024
-  }
+  },
+  isAdmin: Boolean
 })
 userSchema.methods.generateAuthToken = function() {
-  return jwt.sign({ _id: this._id }, 'secretkey')
+  return jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, 'secretkey')
 }
 const User = mongoose.model('User', userSchema)
 function validateUser(user) {

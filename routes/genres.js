@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router()
 const auth = require('../middleware/auth')
+const admin = require('../middleware/admin')
 
 router.get('/', async (req, res) => {
   const genres = await Genre.find().sort('name')
@@ -37,7 +38,7 @@ router.put('/:id', async (req, res) => {
   res.send(genre)
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id)
 
   if (!genre)
