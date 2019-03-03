@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024
   }
 })
-userSchema.methods.generateAuthToken = () => {
-  return jwt.sign({ _id: this.id }, config.get('jwtPrivateKey'))
+userSchema.methods.generateAuthToken = function() {
+  return jwt.sign({ _id: this._id }, 'secretkey')
 }
 const User = mongoose.model('User', userSchema)
 function validateUser(user) {
