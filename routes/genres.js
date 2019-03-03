@@ -5,13 +5,13 @@ const router = express.Router()
 const auth = require('../middleware/auth')
 const admin = require('../middleware/admin')
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   //if using async and await
   try {
     const genres = await Genre.find().sort('name')
     res.send(genres)
   } catch (ex) {
-    res.status(500).send('Something Failed')
+    next(ex)
   }
 })
 
