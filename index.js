@@ -9,6 +9,7 @@ const express = require('express')
 const app = express()
 const Joi = require('joi')
 const config = require('config')
+//export vidly_jwtPrivateKey=myScure
 
 if (!config.get('jwtPrivateKey')) {
   console.log('Error Fatal Jwt')

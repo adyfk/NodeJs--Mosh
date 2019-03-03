@@ -4,7 +4,6 @@ const router = express.Router()
 const _ = require('lodash')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
-//export vidly_jwtPrivateKey=myScure
 
 router.post('/', async (req, res) => {
   const { error } = validate(req.body)
