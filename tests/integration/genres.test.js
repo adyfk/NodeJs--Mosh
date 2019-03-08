@@ -18,7 +18,7 @@ describe('/api/genres', () => {
     it('should return all genres', async () => {
       const genres = [{ name: 'genre1' }, { name: 'genre2' }]
 
-      await Genre.collection.insertMany(genres)
+      Genre.collection.insertMany(genres)
       const res = await request(server).get('/api/genres')
 
       expect(res.status).toBe(200)
@@ -30,7 +30,7 @@ describe('/api/genres', () => {
   describe('GET /:id', () => {
     it('should return a genre if valid id is passed', async () => {
       const genre = new Genre({ name: 'genre1' })
-      await genre.save()
+      genre.save()
 
       const res = await request(server).get('/api/genres/' + genre._id)
 
