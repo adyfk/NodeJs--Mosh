@@ -17,13 +17,14 @@ describe('/api/genres', () => {
   describe('GET /', () => {
     it('should return all genres', async () => {
       const genres = [{ name: 'genre1' }, { name: 'genre2' }]
-
-      Genre.collection.insertMany(genres)
-      const res = await request(server).get('/api/genres')
-
-      expect(res.status).toBe(200)
-      expect(res.body.length).toBe(1)
-      expect(res.body.some(g => g.name === 'genre1')).toBeTruthy()
+      await Genre.collection.insertMany(genres, () => {
+        request(server).get('/api/genres', res => {
+          expect(res.status).toBe(200)
+          expect(res.body.length).toBe(2)
+          expect(res.body.some(g => g.name === 'genre1')).toBeTruthy()
+          expect(res.body.some(g => g.name === 'genre2')).toBeTruthy()
+        })
+      })
     })
   })
 
