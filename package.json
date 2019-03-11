@@ -4,28 +4,34 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage"
+    "test": "jest --watchAll --verbose --coverage",
+    "start": "node index.js"
+  },
+  "engine": {
+    "node": "10.15.1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "",
+    "compression": "^1.7.3",
     "config": "",
     "express": "",
     "express-async-errors": "",
     "fawn": "",
+    "helmet": "^3.16.0",
     "joi": "",
     "joi-objectid": "",
     "jsonwebtoken": "",
     "lodash": "",
-    "moment": "^2.24.0",
+    "moment": "",
     "mongoose": "",
     "winston": "",
     "winston-mongodb": ""
   },
   "devDependencies": {
     "jest": "",
-    "supertest": ""
+    "supertest": "^3.0.0"
   }
 }
